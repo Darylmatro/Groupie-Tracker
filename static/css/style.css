@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100%;
+  min-height: 100vh; /* Modifié pour remplir la hauteur de la fenêtre */
   text-align: center;
 }
 
@@ -41,6 +41,18 @@ header {
   justify-content: center;
   align-items: center;
   height: 100px;
+  width: 100%; /* Occupera toute la largeur */
+  position: fixed; /* Ajouté pour le positionnement fixe */
+  top: 0; /* Aligné en haut */
+  background-color: var(
+    --bg-color
+  ); /* Ajouté pour correspondre à la couleur de fond du body */
+  z-index: 1000; /* Assure que le header est au-dessus du reste du contenu */
+}
+
+.logo {
+  position: absolute;
+  left: 20px; /* Ajustez la distance du bord gauche selon vos préférences */
 }
 
 h1 {
@@ -198,13 +210,14 @@ button span {
   margin-top: 20px;
 }
 
-@media screen and (max-width: 768px) {
-  .image-container,
-  .text-container {
-    flex-basis: 100%;
-  }
-
-  #map {
-    width: 100%;
-  }
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }

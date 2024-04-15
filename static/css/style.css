@@ -31,28 +31,90 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* Modifié pour remplir la hauteur de la fenêtre */
+  min-height: 100%;
   text-align: center;
 }
 
 header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  width: 100%; /* Occupera toute la largeur */
-  position: fixed; /* Ajouté pour le positionnement fixe */
-  top: 0; /* Aligné en haut */
-  background-color: var(
-    --bg-color
-  ); /* Ajouté pour correspondre à la couleur de fond du body */
-  z-index: 1000; /* Assure que le header est au-dessus du reste du contenu */
+  width: 100%; /* Assurez-vous que le header prend la largeur totale */
+  position: fixed; /* Utilisez fixed si vous voulez que le header reste en haut lors du scroll */
+  top: 0; /* Fixe le header en haut de la page */
+  z-index: 100; /* S'assure que le header reste au-dessus des autres éléments */
 }
 
-.logo {
-  position: absolute;
-  left: 20px; /* Ajustez la distance du bord gauche selon vos préférences */
+header a {
+  color: #fff;
+}
+
+/* Réinitialisation pour s'assurer que les styles par défaut ne perturbent pas la mise en page */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styles du conteneur de navigation */
+nav {
+  display: flex;
+  justify-content: space-between; /* Alignement horizontal */
+  align-items: center; /* Alignement vertical */
+  padding: 10px;
+  background: #333; /* Couleur de fond pour la visibilité, remplacez par votre propre couleur */
+}
+
+/* Styles pour le titre et les éléments de la liste de navigation pour prendre un espace équitable */
+nav .title,
+nav ul {
+  flex: 1;
+  text-align: center; /* Centre le texte du titre et des éléments de navigation */
+}
+
+/* Styles pour le conteneur de la barre de recherche */
+nav #searchContainer {
+  flex: 2; /* La barre de recherche prend plus d'espace */
+  display: flex;
+  justify-content: center; /* Centre horizontalement la barre de recherche dans son conteneur */
+  align-items: center; /* Centre verticalement */
+}
+
+/* Style de la barre de recherche pour occuper la totalité de son conteneur */
+#searchBox {
+  width: 500px; /* Occupe toute la largeur de son conteneur #searchContainer */
+  padding: 8px 15px;
+  font-size: 1rem; /* Adaptez la taille de police à vos besoins */
+  border-radius: 20px;
+  border: 2px solid var(--primary-color);
+  color: var(--text-color);
+  background-color: var(
+    --bg-color
+  ); /* Arrondit les coins de la barre de recherche */
+  outline: none;
+}
+
+#searchBox:focus {
+  box-shadow: 0 0 8px #00f; /* Ajoute un effet d'ombre bleutée pour plus de profondeur */
+  border-color: #00f; /* Assurez-vous que la bordure est également bleue pour maintenir la cohérence */
+}
+
+/* Styles pour la liste de navigation */
+nav ul {
+  display: flex;
+  justify-content: flex-end; /* Alignement des liens de navigation à droite */
+  gap: 20px;
+  list-style-type: none; /* Supprime les puces de la liste */
+}
+
+/* Styles pour les liens dans la liste de navigation */
+nav a {
+  color: #fff; /* Couleur du texte pour la visibilité, remplacez par votre propre couleur */
+  text-decoration: none; /* Supprime le soulignement des liens */
+  padding: 5px 10px; /* Espacement autour des liens pour une meilleure apparence et clicabilité */
+}
+
+/* Styles pour le placeholder de la barre de recherche */
+#searchBox::placeholder {
+  color: var(--border-color); /* Placeholder plus subtil */
+  opacity: 0.5; /* Demi-transparence pour le placeholder */
 }
 
 h1 {
@@ -61,7 +123,7 @@ h1 {
   padding: 10px;
 }
 
-button {
+.btn {
   background-color: #34656d;
   color: white;
   border: none;
@@ -73,12 +135,12 @@ button {
   border-radius: 9px;
 }
 
-button:hover {
+.btn:hover {
   background-color: #ffc107;
   color: #34656d;
 }
 
-button::before {
+.btn::before {
   content: "";
   position: absolute;
   top: 0;
@@ -90,11 +152,11 @@ button::before {
   transition: left 0.5s;
 }
 
-button:hover::before {
+.btn:hover::before {
   left: 100%;
 }
 
-button span {
+.btn span {
   position: relative;
   z-index: 1;
 }
@@ -108,12 +170,26 @@ button span {
   padding: 10px;
 }
 
+.artist-page {
+  margin-top: 100px;
+}
+
 .artists-container {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 20px;
   padding: 20px;
   justify-items: center;
+  justify-content: center; /* Centrer verticalement si aucune autre carte n'est visible */
+  min-height: 80vh;
+  margin-bottom: 30px;
+}
+
+.members-list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 0;
 }
 
 /* Composants spécifiques */
@@ -165,6 +241,17 @@ button span {
   transform: rotateY(180deg);
 }
 
+.card-back h3 {
+  font-size: 1.2em; /* Taille du titre */
+  margin: 0; /* Supprimer la marge par défaut */
+  padding: 10px 0; /* Espacement autour du titre */
+}
+
+.card-back p {
+  font-size: 0.9em; /* Taille du paragraphe */
+  margin: 5px 0; /* Espacement entre les paragraphes */
+}
+
 .container {
   width: 90%;
   max-width: 1000px;
@@ -204,20 +291,77 @@ button span {
   order: 2;
 }
 
+.events-list {
+  list-style-type: none; /* Supprime les puces */
+  padding-left: 0; /* Supprime l'indentation par défaut des listes */
+}
+
+.events-list li {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.clickable-item {
+  cursor: pointer;
+}
+
+.view-on-map:before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.clickable-item:hover {
+  transform: scale(1.02); /* Léger agrandissement */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transition douce */
+}
+
 #map {
   order: 3;
   width: 100%;
   margin-top: 20px;
 }
 
+#noResults {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+}
+
 footer {
+  flex-shrink: 0;
+  width: 100%;
   background-color: #333;
   color: white;
   text-align: center;
   padding: 20px;
   font-size: 14px;
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  margin-top: auto;
+}
+
+.main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centre le contenu de la div.main verticalement */
+}
+
+@media screen and (max-width: 768px) {
+  .image-container,
+  .text-container {
+    flex-basis: 100%;
+  }
+
+  #map {
+    width: 100%;
+  }
 }
